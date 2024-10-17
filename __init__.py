@@ -77,10 +77,8 @@ def enregistrer_client():
     conn.close()
     return redirect('/consultation/')  # Rediriger vers la page d'accueil après l'enregistrement
 
-@app.route('/fiche_nom', methods=['POST'])
+@app.route('/fiche_nom', <int:nom>)
 def fiche_nom():
-    nom = request.form(['nom'])
-
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
