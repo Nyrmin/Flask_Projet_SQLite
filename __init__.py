@@ -87,7 +87,7 @@ cursor = conn.cursor()
 cursor.execute('SELECT * FROM clients WHERE nom = ?', (nom,))
 data = cursor.fetchall()
 conn.close
-return redner_template('read_data.html', data=data)
+return render_template('read_data.html', data=data)
                                                                                                                                        
 if __name__ == "__main__":
   app.run(debug=True)
