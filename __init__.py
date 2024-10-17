@@ -81,13 +81,13 @@ def enregistrer_client():
 def fiche_nom():
     nom = request.form(['nom'])
 
-conn = sqlite3.connect('database.db')
-cursor = conn.cursor()
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
 
-cursor.execute('SELECT * FROM clients WHERE nom = ?', (nom,))
-data = cursor.fetchall()
-conn.close
-return render_template('read_data.html', data=data)
+    cursor.execute('SELECT * FROM clients WHERE nom = ?', (nom,))
+    data = cursor.fetchall()
+    conn.close
+    return render_template('read_data.html', data=data)
                                                                                                                                        
 if __name__ == "__main__":
   app.run(debug=True)
