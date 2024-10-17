@@ -12,6 +12,9 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'  # Clé secrète pour les sessions
 def est_authentifie():
     return session.get('authentifie')
 
+def user():
+    return session.get('user_A')
+
 @app.route('/')
 def hello_world():
     return render_template('hello.html')
@@ -32,6 +35,9 @@ def authentification():
         if request.form['username'] == 'admin' and request.form['password'] == 'password': # password à cacher par la suite
             session['authentifie'] = True
             # Rediriger vers la route lecture après une authentification réussie
+            return redirect(url_for('lecture'))
+        elif request.form['username'] == 'user' and request.form['password'] == 'password':
+            session['user_A'] = True
             return redirect(url_for('lecture'))
         else:
             # Afficher un message d'erreur si les identifiants sont incorrects
@@ -77,9 +83,9 @@ def enregistrer_client():
     conn.close()
     return redirect('/consultation/')  # Rediriger vers la page d'accueil après l'enregistrement
 
-@app.route('/fiche_nom/<string:nom>/<int:password>')
-def fiche_nom(nom, password):
-    if password == 12345:
+@app.route('/fiche_nom/<string:nom>')
+def fiche_nom(nom):
+    if user():
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
 
@@ -88,7 +94,7 @@ def fiche_nom(nom, password):
         conn.close
         return render_template('read_data.html', data=data)
     else:
-        return render_template('read_data.html', error=True)
+        return '<h1>non identifié</h1>'
                                                                                                                                        
 if __name__ == "__main__":
   app.run(debug=True)
