@@ -77,15 +77,18 @@ def enregistrer_client():
     conn.close()
     return redirect('/consultation/')  # Rediriger vers la page d'accueil après l'enregistrement
 
-@app.route('/fiche_nom/<string:nom>')
-def fiche_nom(nom):
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
+@app.route('/fiche_nom/<string:nom>/<int:password>')
+def fiche_nom(nom, password):
+    if password == 12345:
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
 
-    cursor.execute('SELECT * FROM clients WHERE nom = ?', (nom,))
-    data = cursor.fetchall()
-    conn.close
-    return render_template('read_data.html', data=data)
+        cursor.execute('SELECT * FROM clients WHERE nom = ?', (nom,))
+        data = cursor.fetchall()
+        conn.close
+        return render_template('read_data.html', data=data)
+    else:
+        return render_template('read_data.html', error=True)
                                                                                                                                        
 if __name__ == "__main__":
   app.run(debug=True)
