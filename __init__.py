@@ -164,7 +164,7 @@ def fiche_livre_nom(nom):
 
 
 @app.route('/consultation_emprunts/')
-def BDD_livre():
+def BDD_emprunt():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM emprunts;')
