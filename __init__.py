@@ -127,8 +127,17 @@ def enregistrer_livre():
     cursor.execute('INSERT INTO livres (nom) VALUES (?)', (nom,))
     conn.commit()
     conn.close()
-    return redirect('/consultation_livre/')  # Rediriger vers la page d'accueil après l'enregistrement
+    return redirect('/consultation_livre/')
 
+@app.route('/supprimer_livre/<int:id>")
+def supprimer_livre(id):
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+
+    cursor.execute('DELETE FROM livres WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    return redirect('/consultation_livre/')
 
                                                                                                                                        
 if __name__ == "__main__":
