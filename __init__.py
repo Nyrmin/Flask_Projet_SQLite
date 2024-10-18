@@ -179,7 +179,7 @@ def formulaire_emprunt():
 @app.route('/enregistrer_emprunt', methods=['POST'])
 def enregistrer_emprunt():
     id_client = request.form['id_client']
-    id_livree = request.form['id_livre']
+    id_livre = request.form['id_livre']
 
     # Connexion à la base de données
     conn = sqlite3.connect('database.db')
