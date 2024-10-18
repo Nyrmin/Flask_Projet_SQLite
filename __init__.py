@@ -161,6 +161,35 @@ def fiche_livre_nom(nom):
     else:
         return '<h1>non identifié</h1>'
 
+
+
+@app.route('/consultation_emprunts/')
+def BDD_livre():
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM emprunts;')
+    data = cursor.fetchall()
+    conn.close()
+    return render_template('read_emprunt.html', data=data)
+
+@app.route('/emprunt', methods=['GET'])
+def formulaire_emprunt():
+    return render_template('formulaire_emprunt.html')  # afficher le formulaire
+
+@app.route('/enregistrer_emprunt', methods=['POST'])
+def enregistrer_emprunt():
+    id_client = request.form['id_client']
+    id_livree = request.form['id_livre']
+
+    # Connexion à la base de données
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+
+    # Exécution de la requête SQL pour insérer un nouveau client
+    cursor.execute('INSERT INTO emprunts (id_client,id_livre) VALUES (?,?)', (id_client,id_livre))
+    conn.commit()
+    conn.close()
+    return redirect('/consultation_emprunts/')
                                                                                                                                        
 if __name__ == "__main__":
   app.run(debug=True)
