@@ -116,7 +116,7 @@ def formulaire_livre():
     return render_template('formulaire_livre.html')  # afficher le formulaire
 
 @app.route('/enregistrer_livre', methods=['POST'])
-def enregistrer_client():
+def enregistrer_livre():
     nom = request.form['nom']
 
     # Connexion à la base de données
