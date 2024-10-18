@@ -12,7 +12,7 @@ CREATE TABLE livres (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nom TEXT NOT NULL,
     auteur TEXT NOT NULL,
-    quantite INTEGER NOT NULL
+    quantite INTEGER NOT NULL DEFAULT 1
 );
 
 DROP TABLE IF EXISTS emprunts;
