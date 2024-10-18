@@ -172,7 +172,7 @@ def BDD_emprunt():
     conn.close()
     return render_template('read_emprunt.html', data=data)
 
-@app.route('/emprunt', methods=['GET'])
+@app.route('/enregistrer_emprunt', methods=['GET'])
 def formulaire_emprunt():
     return render_template('formulaire_emprunt.html')  # afficher le formulaire
 
