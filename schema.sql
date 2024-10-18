@@ -19,7 +19,7 @@ CREATE TABLE emprunts (
     id_client INTEGER NOT NULL,
     id_livre INTEGER NOT NULL,
     date_debut TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    date_fin DATE,
+    date_fin TIMESTAMP,
     FOREIGN KEY (id_client) REFERENCES clients(id),
     FOREIGN KEY (id_livre) REFERENCES livres(id)
 );
