@@ -18,7 +18,7 @@ CREATE TABLE emprunts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_client INTEGER NOT NULL,
     id_livre INTEGER NOT NULL,
-    date_debut DATE NOT NULL,
+    date_debut TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     date_fin DATE,
     FOREIGN KEY (id_client) REFERENCES clients(id),
     FOREIGN KEY (id_livre) REFERENCES livres(id)
