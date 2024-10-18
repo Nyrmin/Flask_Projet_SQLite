@@ -115,6 +115,21 @@ def BDD_livre():
 def formulaire_livre():
     return render_template('formulaire_livre.html')  # afficher le formulaire
 
+@app.route('/enregistrer_livre', methods=['POST'])
+def enregistrer_client():
+    nom = request.form['nom']
+
+    # Connexion à la base de données
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+
+    # Exécution de la requête SQL pour insérer un nouveau client
+    cursor.execute('INSERT INTO livres (nom) VALUES (?)', (nom,))
+    conn.commit()
+    conn.close()
+    return redirect('/consultation_livre/')  # Rediriger vers la page d'accueil après l'enregistrement
+
+
                                                                                                                                        
 if __name__ == "__main__":
   app.run(debug=True)
