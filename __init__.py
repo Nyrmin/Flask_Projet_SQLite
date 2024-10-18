@@ -139,14 +139,27 @@ def supprimer_livre(id):
     conn.close()
     return redirect('/consultation_livre/')
 
-@app.route('/fiche_livre/<int:post_id>')
-def ficher_livre(post_id):
+@app.route('/fiche_livre_id/<int:post_id>')
+def fiche_livre_id(post_id):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM livres WHERE id = ?', (post_id,))
     data = cursor.fetchall()
     conn.close()
     return render_template('read_livre.html', data=data)
+
+@app.route('/fiche_livre_nom/<string:nom>')
+def fiche_livre_nom(nom):
+    if user():
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        cursor.execute('SELECT * FROM clients WHERE nom = ?', (nom,))
+        data = cursor.fetchall()
+        conn.close
+        return render_template('read_livre.html', data=data)
+    else:
+        return '<h1>non identifié</h1>'
 
                                                                                                                                        
 if __name__ == "__main__":
