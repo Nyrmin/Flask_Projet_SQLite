@@ -12,14 +12,20 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'  # Clé secrète pour les sessions
 def est_authentifie():
     return session.get('authentifie')
 
+def user():
+    return session.get('user_A')
+
 @app.route('/')
 def hello_world():
     return render_template('hello.html')
 
 @app.route('/lecture')
 def lecture():
-    if not est_authentifie():
-        # Rediriger vers la page d'authentification si l'utilisateur n'est pas authentifié
+    if est_authentifie():
+        return "<h1>Bonjour Administrateur</h1>"
+    elif user():
+        return "<h1>Bonjour Utilisateur</h1>"
+    else:
         return redirect(url_for('authentification'))
 
   # Si l'utilisateur est authentifié
@@ -29,9 +35,14 @@ def lecture():
 def authentification():
     if request.method == 'POST':
         # Vérifier les identifiants
-        if request.form['username'] == 'user' and request.form['password'] == '12345': # password à cacher par la suite
+        if request.form['username'] == 'admin' and request.form['password'] == 'password': # password à cacher par la suite
             session['authentifie'] = True
+            session['user_A'] = False
             # Rediriger vers la route lecture après une authentification réussie
+            return redirect(url_for('lecture'))
+        elif request.form['username'] == 'user' and request.form['password'] == '12345':
+            session['user_A'] = True
+            session['authentifie'] = False
             return redirect(url_for('lecture'))
         else:
             # Afficher un message d'erreur si les identifiants sont incorrects
@@ -39,11 +50,11 @@ def authentification():
 
     return render_template('formulaire_authentification.html', error=False)
 
-@app.route('/fiche_nom/<string:id>')
-def Readfiche(id):
+@app.route('/fiche_client/<int:post_id>')
+def Readfiche(post_id):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM clients WHERE nom = ?', (id,))
+    cursor.execute('SELECT * FROM clients WHERE id = ?', (post_id,))
     data = cursor.fetchall()
     conn.close()
     # Rendre le template HTML et transmettre les données
@@ -68,16 +79,6 @@ def enregistrer_client():
     prenom = request.form['prenom']
 
     # Connexion à la base de données
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
-
-    # Exécution de la requête SQL pour insérer un nouveau client
-    cursor.execute('INSERT INTO clients (created, nom, prenom, adresse) VALUES (?, ?, ?, ?)', (1002938, nom, prenom, "ICI"))
-    conn.commit()
-    conn.close()
-    return redirect('/consultation/')  # Rediriger vers la page d'accueil après l'enregistrement
-
- # Connexion à la base de données
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
