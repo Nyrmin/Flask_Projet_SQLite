@@ -190,6 +190,17 @@ def enregistrer_emprunt():
     conn.commit()
     conn.close()
     return redirect('/consultation_emprunts/')
+
+@app.route('/retour/<int:id>')
+def retour(id):
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+
+    # Exécution de la requête SQL pour insérer un nouveau client
+    cursor.execute('UPDATE emprunts SET CURRENT_TIMESTAMP WHERE id = (?)', (id))
+    conn.commit()
+    conn.close()
+    return redirect('/consultation_emprunts/')
                                                                                                                                        
 if __name__ == "__main__":
   app.run(debug=True)
