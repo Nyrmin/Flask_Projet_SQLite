@@ -186,7 +186,7 @@ def enregistrer_emprunt():
     cursor = conn.cursor()
 
     # Exécution de la requête SQL pour insérer un nouveau client
-    cursor.execute('INSERT INTO emprunts (id_client,id_livre, date_fin) VALUES (?,?,?)', (id_client,id_livre,NULL,))
+    cursor.execute('INSERT INTO emprunts (id_client,id_livre) VALUES (?,?)', (id_client,id_livre,))
     conn.commit()
     conn.close()
     return redirect('/consultation_emprunts/')
