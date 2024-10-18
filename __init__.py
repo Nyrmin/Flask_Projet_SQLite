@@ -197,7 +197,7 @@ def retour(id):
     cursor = conn.cursor()
 
     # Exécution de la requête SQL pour insérer un nouveau client
-    cursor.execute('UPDATE emprunts SET CURRENT_TIMESTAMP WHERE id = (?)', (id))
+    cursor.execute('UPDATE emprunts SET date_fin = CURRENT_TIMESTAMP WHERE id = ?', (id,))
     conn.commit()
     conn.close()
     return redirect('/consultation_emprunts/')
