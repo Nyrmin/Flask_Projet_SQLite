@@ -113,7 +113,7 @@ def BDD_livre():
 
 @app.route('/enregistrer_livre', methods=['GET'])
 def formulaire_livre():
-    return render_template('formulaire.html')  # afficher le formulaire
+    return render_template('formulaire_livre.html')  # afficher le formulaire
 
                                                                                                                                        
 if __name__ == "__main__":
