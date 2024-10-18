@@ -22,9 +22,9 @@ def hello_world():
 @app.route('/lecture')
 def lecture():
     if est_authentifie():
-        return
+        return "<h1>Bonjour Administrateur</h1>"
     elif user():
-        return
+        return "<h1>Bonjour Utilisateur</h1>"
     else:
         return redirect(url_for('authentification'))
 
