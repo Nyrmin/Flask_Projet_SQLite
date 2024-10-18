@@ -21,8 +21,11 @@ def hello_world():
 
 @app.route('/lecture')
 def lecture():
-    if not est_authentifie() OR not user():
-        # Rediriger vers la page d'authentification si l'utilisateur n'est pas authentifié
+    if est_authentifie():
+        return
+    elif user():
+        return
+    else:
         return redirect(url_for('authentification'))
 
   # Si l'utilisateur est authentifié
