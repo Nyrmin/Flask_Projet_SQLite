@@ -10,7 +10,9 @@ CREATE TABLE clients (
 DROP TABLE IF EXISTS livres;
 CREATE TABLE livres (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nom TEXT NOT NULL
+    nom TEXT NOT NULL,
+    auteur TEXT NOT NULL,
+    quantite INTEGER NOT NULL
 );
 
 DROP TABLE IF EXISTS emprunts;
