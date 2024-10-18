@@ -102,7 +102,7 @@ def fiche_nom(nom):
         return '<h1>non identifié</h1>'
 
 
-@app.route('consultation_livre')
+@app.route('/consultation_livre')
 def BDD_livre():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
