@@ -129,7 +129,7 @@ def enregistrer_livre():
     conn.close()
     return redirect('/consultation_livre/')
 
-@app.route('/supprimer_livre/<int:id>")
+@app.route('/supprimer_livre/<int:id>')
 def supprimer_livre(id):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
