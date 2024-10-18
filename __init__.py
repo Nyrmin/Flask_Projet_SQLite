@@ -100,6 +100,21 @@ def fiche_nom(nom):
         return render_template('read_data.html', data=data)
     else:
         return '<h1>non identifié</h1>'
+
+
+@app.route('consultation_livre/')
+def BDD_livre():
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM livres;')
+    data = cursor.fetchall()
+    conn.close()
+    return render_template('read_data.html', data=data)
+
+@app.route('/enregistrer_livre', methods=['GET'])
+def formulaire_livre():
+    return render_template('formulaire.html')  # afficher le formulaire
+
                                                                                                                                        
 if __name__ == "__main__":
   app.run(debug=True)
