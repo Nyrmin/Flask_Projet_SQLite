@@ -109,7 +109,7 @@ def BDD_livre():
     cursor.execute('SELECT * FROM livres;')
     data = cursor.fetchall()
     conn.close()
-    return render_template('read_data.html', data=data)
+    return render_template('read_livre.html', data=data)
 
 @app.route('/enregistrer_livre', methods=['GET'])
 def formulaire_livre():
