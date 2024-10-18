@@ -139,6 +139,15 @@ def supprimer_livre(id):
     conn.close()
     return redirect('/consultation_livre/')
 
+@app.route('/fiche_livre/<int:post_id>')
+def ficher_livre(post_id):
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM livres WHERE id = ?', (post_id,))
+    data = cursor.fetchall()
+    conn.close()
+    return render_template('read_livre.html', data=data)
+
                                                                                                                                        
 if __name__ == "__main__":
   app.run(debug=True)
