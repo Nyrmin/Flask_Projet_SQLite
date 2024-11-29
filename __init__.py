@@ -135,9 +135,9 @@ def enregistrer_livre():
     cursor = conn.cursor()
 
     # Exécution de la requête SQL pour insérer un nouveau livre ou incrémenter de 1 le compte si existant
-    cursor.execute('SELECT COUNT(*) FROM livres WHERE nom = ? AND auteur = ?', (nom,auteur,))
-    data = cursor.fetchall()
-    if data == 0:
+    cursor.execute('SELECT * FROM livres WHERE nom = ? AND auteur = ?', (nom,auteur,))
+    data = cursor.fetchone()
+    if data == []:
         cursor.execute('INSERT INTO livres (nom,auteur) VALUES (?,?)', (nom,auteur))
     else:
         cursor.execute('UPDATE livres SET quantite = quantite+1')
