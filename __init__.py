@@ -140,7 +140,7 @@ def enregistrer_livre():
     if data == None:
         cursor.execute('INSERT INTO livres (nom,auteur) VALUES (?,?)', (nom,auteur))
     else:
-        cursor.execute('UPDATE livres SET quantite = quantite+1')
+        cursor.execute('UPDATE livres SET quantite = quantite+1 WHERE nom = ? AND auteur = ?', (nom,auteur,))
     conn.commit()
     conn.close()
     return redirect('/consultation_livre/')
