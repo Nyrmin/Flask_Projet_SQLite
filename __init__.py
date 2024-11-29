@@ -88,6 +88,16 @@ def enregistrer_client():
     conn.close()
     return redirect('/consultation/')  # Rediriger vers la page d'accueil après l'enregistrement
 
+@app.route('/supprimer_client/<int:id>')
+def supprimer_client(id):
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+
+    cursor.execute('DELETE FROM clients WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    return redirect('/consultation/')
+
 @app.route('/fiche_nom/<string:nom>')
 def fiche_nom(nom):
     if user():
