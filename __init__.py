@@ -134,8 +134,13 @@ def enregistrer_livre():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
-    # Exécution de la requête SQL pour insérer un nouveau client
-    cursor.execute('INSERT INTO livres (nom,auteur) VALUES (?,?)', (nom,auteur))
+    # Exécution de la requête SQL pour insérer un nouveau livre ou incrémenter de 1 le compte si existant
+    cursor.execute('SELECT COUNT(*) FROM livres WHERE nom = ? AND auteur = ?', (nom,auteur,))
+    data = cursor.fetchall()
+    if data == 0:
+        cursor.execute('INSERT INTO livres (nom,auteur) VALUES (?,?)', (nom,auteur))
+    else:
+        cursor.execute('UPDATE livres SET quantite = quantite+1')
     conn.commit()
     conn.close()
     return redirect('/consultation_livre/')
