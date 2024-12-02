@@ -98,6 +98,17 @@ def supprimer_client(id):
     conn.close()
     return redirect('/consultation/')
 
+@app.route('/supprimer_client/<string:nom>')
+def supprimer_clientN(nom):
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+
+    cursor.execute('DELETE FROM clients WHERE nom = ?', (nom,))
+    conn.commit()
+    conn.close()
+    return redirect('/consultation/')
+
+
 @app.route('/fiche_nom/<string:nom>')
 def fiche_nom(nom):
     if user():
