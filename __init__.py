@@ -225,7 +225,7 @@ def enregistrer_emprunt():
     if data == None:
         return
     cursor.execute('INSERT INTO emprunts (id_client,id_livre) VALUES (?,?)', (id_client,id_livre,))
-    cursor.execute('SELECT quantite FROM livres WHERE id = ?', (id,))
+    cursor.execute('SELECT quantite FROM livres WHERE id = ?', (id_livre,))
     quantity = int(cursor.fetchone()[0])
     if quantity != 0:
         cursor.execute('UPDATE livres SET quantite = quantite-1 WHERE id = ?', (id,))
