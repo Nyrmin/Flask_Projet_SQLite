@@ -161,8 +161,10 @@ def supprimer_livre(id):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
-    cursor.execute('DELETE FROM livres WHERE id = ? AND quantite = 1', (id,))
-    cursor.execute('UPDATE livres SET quantite = quantite-1 WHERE id = ?', (id,))
+    cursor.execture('SELECT quantite FROM emprunts WHERE id = ?', (id,))
+    quantity = int(cursor.fetchone()[0])
+    if quantity != 0:
+        cursor.execute('UPDATE livres SET quantite = quantite-1 WHERE id = ?', (id,))
     conn.commit()
     conn.close()
     return redirect('/consultation_livre/')
@@ -213,8 +215,20 @@ def enregistrer_emprunt():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
-    # Exécution de la requête SQL pour insérer un nouveau client
+    # Exécution de la requête SQL pour insérer un nouvel enregistrement
+    cursor.execute('SELECT * FROM livres WHERE id = ?', (id_livre,))
+    data = cursor.fetchone()
+    if data == None:
+        return
+    cursor.execute('SELECT * FROM clients WHERE id = ?', (id_client,))
+    data = cursor.fetchone()
+    if data == None:
+        return
     cursor.execute('INSERT INTO emprunts (id_client,id_livre) VALUES (?,?)', (id_client,id_livre,))
+    cursor.execture('SELECT quantite FROM emprunts WHERE id = ?', (id,))
+    quantity = int(cursor.fetchone()[0])
+    if quantity != 0:
+        cursor.execute('UPDATE livres SET quantite = quantite-1 WHERE id = ?', (id,))
     conn.commit()
     conn.close()
     return redirect('/consultation_emprunts/')
@@ -226,6 +240,9 @@ def retour(id):
 
     # Exécution de la requête SQL pour insérer un nouveau client
     cursor.execute('UPDATE emprunts SET date_fin = CURRENT_TIMESTAMP WHERE id = ?', (id,))
+    cursor.execture('SELECT id_livre FROM emprunts WHERE id = ?', (id,))
+    idL = int(cursor.fetchone()[0])
+    cursor.execute('UPDATE livres SET quantite = quantite+1 WHERE id = ?', (idL,))
     conn.commit()
     conn.close()
     return redirect('/consultation_emprunts/')
