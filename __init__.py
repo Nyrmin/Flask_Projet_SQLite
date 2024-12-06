@@ -242,8 +242,6 @@ def retour(id):
     # Exécution de la requête SQL pour insérer un nouveau client
     cursor.execute('SELECT id_livre,date_fin FROM emprunts WHERE id = ?', (id,))
     idL = int(cursor.fetchone()[0])
-    verify = (cursor.fetchone()[1])
-    if verify == "":
         cursor.execute('UPDATE livres SET quantite = quantite+1 WHERE id = ?', (idL,))
     cursor.execute('UPDATE emprunts SET date_fin = CURRENT_TIMESTAMP WHERE id = ?', (id,))
     conn.commit()
