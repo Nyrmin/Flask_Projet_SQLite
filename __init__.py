@@ -216,9 +216,9 @@ def enregistrer_emprunt():
     cursor = conn.cursor()
 
     # Exécution de la requête SQL pour insérer un nouvel enregistrement
-    cursor.execute('SELECT * FROM livres WHERE id = ?', (id_livre,))
-    data = cursor.fetchone()
-    if data == None:
+    cursor.execute('SELECT quantite FROM livres WHERE id = ?', (id_livre,))
+    data = int(cursor.fetchone()[0])
+    if data == 0:
         return
     cursor.execute('SELECT * FROM clients WHERE id = ?', (id_client,))
     data = cursor.fetchone()
