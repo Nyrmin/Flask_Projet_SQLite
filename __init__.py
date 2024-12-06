@@ -227,8 +227,9 @@ def enregistrer_emprunt():
     cursor.execute('INSERT INTO emprunts (id_client,id_livre) VALUES (?,?)', (id_client,id_livre,))
     cursor.execute('SELECT quantite FROM livres WHERE id = ?', (id_livre,))
     quantity = int(cursor.fetchone()[0])
-    if quantity != 0:
-        cursor.execute('UPDATE livres SET quantite = quantite-1 WHERE id = ?', (id_livre,))
+    if quantity == 0:
+        return
+    cursor.execute('UPDATE livres SET quantite = quantite-1 WHERE id = ?', (id_livre,))
     conn.commit()
     conn.close()
     return redirect('/consultation_emprunts/')
