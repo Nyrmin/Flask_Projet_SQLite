@@ -161,7 +161,8 @@ def supprimer_livre(id):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
-    cursor.execute('DELETE FROM livres WHERE id = ?', (id,))
+    cursor.execute('DELETE FROM livres WHERE id = ? AND quantite = 1', (id,))
+    cursor.execute('UPDATE livres SET quantite = quantite-1 WHERE id = ?', (id,))
     conn.commit()
     conn.close()
     return redirect('/consultation_livre/')
