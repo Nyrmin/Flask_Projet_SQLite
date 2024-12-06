@@ -219,16 +219,16 @@ def enregistrer_emprunt():
     cursor.execute('SELECT quantite FROM livres WHERE id = ?', (id_livre,))
     data = int(cursor.fetchone()[0])
     if data == 0:
-        return
+        return redirect('/consultation_emprunts/')
     cursor.execute('SELECT * FROM clients WHERE id = ?', (id_client,))
     data = cursor.fetchone()
     if data == None:
-        return
+        return redirect('/consultation_emprunts/')
     cursor.execute('INSERT INTO emprunts (id_client,id_livre) VALUES (?,?)', (id_client,id_livre,))
     cursor.execute('SELECT quantite FROM livres WHERE id = ?', (id_livre,))
     quantity = int(cursor.fetchone()[0])
     if quantity == 0:
-        return
+        return redirect('/consultation_emprunts/')
     cursor.execute('UPDATE livres SET quantite = quantite-1 WHERE id = ?', (id_livre,))
     conn.commit()
     conn.close()
