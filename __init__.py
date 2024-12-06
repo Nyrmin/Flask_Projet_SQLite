@@ -246,8 +246,8 @@ def retour(id):
     state = int(tuple[1])
     if state == 1:
         cursor.execute('UPDATE livres SET quantite = quantite+1 WHERE id = ?', (idL,))
-    cursor.execute('UPDATE emprunts SET date_fin = CURRENT_TIMESTAMP WHERE id = ?', (id,))
-    cursor.execute('UPDATE emprunts SET state = 0 WHERE id = ?', (id,))
+        cursor.execute('UPDATE emprunts SET date_fin = CURRENT_TIMESTAMP WHERE id = ?', (id,))
+        cursor.execute('UPDATE emprunts SET state = 0 WHERE id = ?', (id,))
     conn.commit()
     conn.close()
     return redirect('/consultation_emprunts/')
