@@ -224,7 +224,7 @@ def enregistrer_emprunt():
     data = cursor.fetchone()
     if data == None:
         return redirect('/consultation_emprunts/')
-    cursor.execute('INSERT INTO emprunts (id_client,id_livre) VALUES (?,?)', (id_client,id_livre,))
+    cursor.execute('INSERT INTO emprunts (id_client,id_livre,state) VALUES (?,?,?)', (id_client,id_livre,"active"))
     cursor.execute('SELECT quantite FROM livres WHERE id = ?', (id_livre,))
     quantity = int(cursor.fetchone()[0])
     if quantity == 0:
@@ -240,8 +240,10 @@ def retour(id):
     cursor = conn.cursor()
 
     # Exécution de la requête SQL pour insérer un nouveau client
-    cursor.execute('SELECT id_livre,date_fin FROM emprunts WHERE id = ?', (id,))
+    cursor.execute('SELECT id_livre,state FROM emprunts WHERE id = ?', (id,))
     idL = int(cursor.fetchone()[0])
+    state = str(cursor.fetchone()[1])
+    if state == "active":
         cursor.execute('UPDATE livres SET quantite = quantite+1 WHERE id = ?', (idL,))
     cursor.execute('UPDATE emprunts SET date_fin = CURRENT_TIMESTAMP WHERE id = ?', (id,))
     conn.commit()
