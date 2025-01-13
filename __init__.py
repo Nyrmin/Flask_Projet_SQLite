@@ -50,6 +50,12 @@ def authentification():
 
     return render_template('formulaire_authentification.html', error=False)
 
+@app.route('/deconnexion/')
+def Deconnexion():
+    session['authentifie'] = False
+    session['user_A'] = False
+    return redirect(url_for('lecture'))
+
 @app.route('/fiche_client/<int:post_id>')
 def Readfiche(post_id):
     conn = sqlite3.connect('database.db')
