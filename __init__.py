@@ -240,7 +240,7 @@ def enregistrer_emprunt():
     conn.close()
     return redirect('/consultation_emprunts/')
 
-@app.route('/enregistrer_emprunt', methods=['GET'])
+@app.route('/retour', methods=['GET'])
 def retour():
     return render_template('retour_emprunt.html')  # afficher le formulaire
 
