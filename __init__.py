@@ -240,8 +240,14 @@ def enregistrer_emprunt():
     conn.close()
     return redirect('/consultation_emprunts/')
 
-@app.route('/retour/<int:id>')
-def retour(id):
+@app.route('/enregistrer_emprunt', methods=['GET'])
+def formulaire_emprunt():
+    return render_template('reour_emprunt.html')  # afficher le formulaire
+
+@app.route('/retour', methods=['POST'])
+def retour():
+    id = request.form['id']
+    
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
