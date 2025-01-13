@@ -78,31 +78,122 @@ def enregistrer_client():
     conn.close()
     return redirect('/consultation/')  # Rediriger vers la page d'accueil après l'enregistrement
 
-
-@app.route('/enregistrer_livre', methods=['GET'])
-def formulaire_livre():
-    return render_template('formulaire_livre.html')
-
 @app.route('/enregistrer_livre', methods=['POST'])
 def enregistrer_livre():
-    # Récupérer les données du formulaire
-    titre = request.form['titre']
+    nom = request.form['nom']
     auteur = request.form['auteur']
-    stock = request.form['stock']
 
     # Connexion à la base de données
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
-    # Exécution de la requête SQL pour insérer un nouveau livre
-    cursor.execute('INSERT INTO livres (titre, auteur, stock) VALUES (?, ?, ?)', (titre, auteur, stock))
+    # Exécution de la requête SQL pour insérer un nouveau livre ou incrémenter de 1 le compte si existant
+    cursor.execute('SELECT * FROM livres WHERE nom = ? AND auteur = ?', (nom,auteur,))
+    data = cursor.fetchone()
+    if data == None:
+        cursor.execute('INSERT INTO livres (nom,auteur) VALUES (?,?)', (nom,auteur))
+    else:
+        cursor.execute('UPDATE livres SET quantite = quantite+1 WHERE nom = ? AND auteur = ?', (nom,auteur,))
     conn.commit()
     conn.close()
+    return redirect('/consultation_livre/')
 
-    # Rediriger vers la page de consultation des livres après l'enregistrement
-    return redirect('/consultation_livres')
+@app.route('/supprimer_livre/<int:id>')
+def supprimer_livre(id):
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
 
+    cursor.execute('SELECT quantite FROM livres WHERE id = ?', (id,))
+    quantity = int(cursor.fetchone()[0])
+    if quantity != 0:
+        cursor.execute('UPDATE livres SET quantite = quantite-1 WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    return redirect('/consultation_livre/')
+
+@app.route('/fiche_livre_id/<int:post_id>')
+def fiche_livre_id(post_id):
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM livres WHERE id = ?', (post_id,))
+    data = cursor.fetchall()
+    conn.close()
+    return render_template('read_livre.html', data=data)
+
+@app.route('/fiche_livre_nom/<string:nom>')
+def fiche_livre_nom(nom):
+    if user():
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        cursor.execute('SELECT * FROM clients WHERE nom = ?', (nom,))
+        data = cursor.fetchall()
+        conn.close
+        return render_template('read_livre.html', data=data)
+    else:
+        return '<h1>non identifié</h1>'
+
+
+
+@app.route('/consultation_emprunts/')
+def BDD_emprunt():
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM emprunts;')
+    data = cursor.fetchall()
+    conn.close()
+    return render_template('read_emprunt.html', data=data)
+
+@app.route('/enregistrer_emprunt', methods=['GET'])
+def formulaire_emprunt():
+    return render_template('formulaire_emprunt.html')  # afficher le formulaire
+
+@app.route('/enregistrer_emprunt', methods=['POST'])
+def enregistrer_emprunt():
+    id_client = request.form['id_client']
+    id_livre = request.form['id_livre']
+
+    # Connexion à la base de données
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+
+    # Exécution de la requête SQL pour insérer un nouvel enregistrement
+    cursor.execute('SELECT quantite FROM livres WHERE id = ?', (id_livre,))
+    data = int(cursor.fetchone()[0])
+    if data == 0:
+        return redirect('/consultation_emprunts/')
+    cursor.execute('SELECT * FROM clients WHERE id = ?', (id_client,))
+    data = cursor.fetchone()
+    if data == None:
+        return redirect('/consultation_emprunts/')
+    cursor.execute('INSERT INTO emprunts (id_client,id_livre,state) VALUES (?,?,?)', (id_client,id_livre,1))
+    cursor.execute('SELECT quantite FROM livres WHERE id = ?', (id_livre,))
+    quantity = int(cursor.fetchone()[0])
+    if quantity == 0:
+        return redirect('/consultation_emprunts/')
+    cursor.execute('UPDATE livres SET quantite = quantite-1 WHERE id = ?', (id_livre,))
+    conn.commit()
+    conn.close()
+    return redirect('/consultation_emprunts/')
+
+@app.route('/retour/<int:id>')
+def retour(id):
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+
+    # Exécution de la requête SQL pour insérer un nouveau client
+    cursor.execute('SELECT id_livre,state FROM emprunts WHERE id = ?', (id,))
+    tuple = cursor.fetchone()
+    idL = int(tuple[0])
+    state = int(tuple[1])
+    if state == 1:
+        cursor.execute('UPDATE livres SET quantite = quantite+1 WHERE id = ?', (idL,))
+        cursor.execute('UPDATE emprunts SET date_fin = CURRENT_TIMESTAMP WHERE id = ?', (id,))
+        cursor.execute('UPDATE emprunts SET state = 0 WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    return redirect('/consultation_emprunts/')
+                                                                                                                                       
 if __name__ == "__main__":
   app.run(debug=True)
-
 
