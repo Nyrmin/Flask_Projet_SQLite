@@ -73,11 +73,11 @@ def enregistrer_client():
     cursor = conn.cursor()
 
     # Exécution de la requête SQL pour insérer un nouveau client
-    cursor.execute('INSERT INTO clients (created, nom, prenom, adresse) VALUES (?, ?, ?, ?)', (1002939, nom, prenom, "ICI"))
+    cursor.execute('INSERT INTO clients (created, nom, prenom, adresse) VALUES (?, ?, ?, ?)', (1002938, nom, prenom, "ICI"))
     conn.commit()
     conn.close()
     return redirect('/consultation/')  # Rediriger vers la page d'accueil après l'enregistrement
-.route('/enregistrer_client', methods=['POST'])
+
 
 @app.route('/enregistrer_livre', methods=['GET'])
 def formulaire_livre():
@@ -104,4 +104,4 @@ def enregistrer_livre():
 
 if __name__ == "__main__":
   app.run(debug=True)
-
+    
