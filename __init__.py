@@ -241,7 +241,7 @@ def enregistrer_emprunt():
     return redirect('/consultation_emprunts/')
 
 @app.route('/retour', methods=['GET'])
-def retour():
+def formulaire_retour():
     return render_template('retour_emprunt.html')  # afficher le formulaire
 
 @app.route('/retour', methods=['POST'])
