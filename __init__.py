@@ -79,7 +79,6 @@ def enregistrer_client():
     return redirect('/consultation/')  # Rediriger vers la page d'accueil après l'enregistrement
 .route('/enregistrer_client', methods=['POST'])
 
-
 @app.route('/enregistrer_livre', methods=['GET'])
 def formulaire_livre():
     return render_template('formulaire_livre.html')
@@ -105,7 +104,4 @@ def enregistrer_livre():
 
 if __name__ == "__main__":
   app.run(debug=True)
-.route('/enregistrer_client', methods=['POST'])
 
-if __name__ == "__main__":
-  app.run(debug=True) 
